@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { WeatherList } from './compenent/allCity';
+import { WeatherList } from './compenent/allWeathers';
+import { CityDisplay } from './compenent/weatherCity';
+import {colorBackground} from './styles/style';
 
 export default function App() {
   return (
@@ -9,7 +11,13 @@ export default function App() {
     //   <StatusBar style="auto" />
     // </View>
     <View style={styles.container}>
-      <WeatherList></WeatherList>
+      <View>
+        <Text>ZZ</Text>
+      </View>
+      <View>
+        <WeatherList></WeatherList>
+        {/* <CityDisplay name={'Clermont-Ferrand'}></CityDisplay> */}
+      </View>
     </View>
   );
 }
@@ -17,6 +25,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: colorBackground
   },
 });
