@@ -1,14 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { WeatherList } from '../compenent/allWeathers';
-import { CityDisplay } from '../compenent/weatherCity';
+import { NavigationProp } from "@react-navigation/native";
 import {colorBackground} from '../styles/style';
-import {FAVORITE_CITY_DATA} from '../data/stub';
 
-export function HomeScreen() {
+export default function HomeScreen({navigation} : {navigation: NavigationProp<Record<string, object | undefined>, string, any, any>}) {
   return (
     <View style={styles.container}>
-        <WeatherList></WeatherList>
+        <WeatherList navigation={navigation}></WeatherList>
     </View>
   );
 }

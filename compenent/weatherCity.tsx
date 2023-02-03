@@ -1,4 +1,4 @@
-import {WEATHER_DATA} from "../data/stub";
+import {Weather, WEATHER_DATA} from "../data/stub";
 import { View,Text, StyleSheet, Image } from "react-native";
 import {cityName} from "../styles/style";
 import {City} from '../data/stub';
@@ -8,7 +8,8 @@ type cityProps = {
 }
 
 export function CityDisplay(props: cityProps) {
-      const cityWeather = WEATHER_DATA.filter(weather => weather.city.name === props.city.name)[0]
+  console.log(props.city)
+      const cityWeather:Weather = WEATHER_DATA.filter(weather => weather.city.name === props.city.name)[0] as Weather
       const dateCity = cityWeather.at.split(" ")[0]
       const timeCity = cityWeather.at.split(" ")[1].slice(0,5)
       return (
