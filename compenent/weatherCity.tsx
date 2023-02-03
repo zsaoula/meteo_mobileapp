@@ -1,13 +1,14 @@
 import {WEATHER_DATA} from "../data/stub";
 import { View,Text, StyleSheet, Image } from "react-native";
 import {cityName} from "../styles/style";
+import {City} from '../data/stub';
 
 type cityProps = {
-    name: string
+    city: City
 }
 
 export function CityDisplay(props: cityProps) {
-      const cityWeather = WEATHER_DATA.filter(weather => weather.city.name === props.name)[0]
+      const cityWeather = WEATHER_DATA.filter(weather => weather.city.name === props.city.name)[0]
       const dateCity = cityWeather.at.split(" ")[0]
       const timeCity = cityWeather.at.split(" ")[1].slice(0,5)
       return (

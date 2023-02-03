@@ -1,6 +1,7 @@
-import {City, WEATHER_DATA} from "../data/stub";
+import {City, Weather, WEATHER_DATA} from "../data/stub";
 import { View,Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import {cityName} from "../styles/style";
+import { WeatherElement } from "./weatherElementList";
 
 export function WeatherList() {
     //return (
@@ -22,21 +23,28 @@ export function WeatherList() {
         <View>
         <FlatList
           data={allWeathers}
-          keyExtractor={(item) => item.city.name}
-          renderItem={({ item }) => {
-            return (
+          keyExtractor={(item: Weather) => item.city.name}
+          renderItem={({ item }) => 
               <TouchableOpacity onPress={() => selectedCity(item.city)}>
-                <View style={weatherListStyle.container}>
-                  <Text style={weatherListStyle.name}>{item.city.name}</Text>
-                  <Text>{Math.floor(item.temperature)}°C</Text>
-                </View>
+                <WeatherElement citySelected={item}></WeatherElement>
               </TouchableOpacity>
-            );
-          }}
+          }
         />
       </View>
     );
-};
+}
+
+//     return (
+//       <View>
+//       <FlatList
+//         data={allWeathers}
+//         keyExtractor={(item: Weather) => item.city.name}
+//         renderItem={WeatherElement}>
+
+//         </FlatList>
+//     </View>
+//   );
+// };
 
 const weatherListStyle = StyleSheet.create({
     container: {
