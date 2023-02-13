@@ -8,7 +8,7 @@ type cityProps = {
 }
 
 export function CityDisplay(props: cityProps) {
-  console.log(props.city)
+  // console.log(props.city)
       const cityWeather:Weather = WEATHER_DATA.filter(weather => weather.city.name === props.city.name)[0] as Weather
       const dateCity = cityWeather.at.split(" ")[0]
       const timeCity = cityWeather.at.split(" ")[1].slice(0,5)

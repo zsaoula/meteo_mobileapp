@@ -11,9 +11,9 @@ type Props = {
 
 // export function DetailScreen({route} : {route : RouteProp<Record<string, object | undefined>, string>}) {
   export function DetailScreen({route}: Props){ 
-     const routeParams:City = route.params?.weatherCity as City;
+    //  const routeParams:City = route.params?.weatherCity as City;
   return (
-    <CityDisplay city={routeParams}></CityDisplay>
+    <CityDisplay city={route.params?.weatherCity}></CityDisplay>
   );
 }
 
