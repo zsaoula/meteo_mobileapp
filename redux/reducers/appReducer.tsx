@@ -1,24 +1,24 @@
-import { CITY_DATA } from "../constants";
+import { CITY_DATA, WEATHER_DATA,WEATHERS_DATA, FAVORITE_CITY } from "../constants";
 
 
 const initialState = {
     cities: [],
     weathers: [],
+    weatherCurrent: [],
     favoriteCity: []
   }
   
   // @ts-ignore
   export function appReducer (state = initialState, action) {
     switch (action.type) {
-    //   case ADD_FAVORITE_NOUNOURS:
-    //     // @ts-ignore
-    //     return {...state, favoriteNounours: state.favoriteNounours.push(action.payload)};
+      case WEATHERS_DATA:
+        return {...state, weathers: action.payload};
+      case WEATHER_DATA:
+        return {...state, weatherCurrent: action.payload};
+      case FAVORITE_CITY:
+        // @ts-ignore
+        return {...state, favoriteCity: action.payload};
       case CITY_DATA:
-        
-        // console.log(action.payload);
-        
-        //initialState.cities = action.payload;
-        console.log(initialState.cities);
         return { ...state, cities: action.payload};
       default:
         return state;

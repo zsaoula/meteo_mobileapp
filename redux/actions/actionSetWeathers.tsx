@@ -1,8 +1,8 @@
-import {Weather, WEATHER_DATA} from '../constants';
+import {Weather, WEATHERS_DATA} from '../constants';
 
 export const setWeathers = (weathersList: Weather[]) => {
   return {
-    type: WEATHER_DATA,
+    type: WEATHERS_DATA,
     payload: weathersList,
   };
 }

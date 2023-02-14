@@ -14,7 +14,7 @@ export const getCities = () => {
       const citiesListJson = await citiesPromise.json();
       // @ts-ignore
       const citiesList: City[] = citiesListJson.map(elt => new City(elt["name"], elt["latitude"], elt["longitude"]));
-      console.log(citiesList);
+      //console.log(citiesList);
       dispatch(setCities(citiesList));
 
 

@@ -146,6 +146,10 @@ export class City {
 // export const DEFAULT_SELECTED_CITY_DATA: City =
 //   new City("Paris", 48.866667, 2.333333);
 
-export const WEATHER_DATA: Weather[] = [];
+export const WEATHER_DATA = 'WEATHER_DATA';
+
+export const WEATHERS_DATA = 'WEATHERS_DATA';
 
 export const CITY_DATA = 'CITY_DATA';
+
+export const FAVORITE_CITY = 'FAVORITE_CITY';

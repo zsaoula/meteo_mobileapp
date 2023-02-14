@@ -8,6 +8,7 @@ import {useEffect} from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import { getCities } from "../redux/actions/actionGetCities";
 import { appReducer } from "../redux/reducers/appReducer";
+import { getWeathers } from "../redux/actions/actionGetWeathers";
 
 export function WeatherList({navigation} : {navigation : NavigationProp<Record<string, object | undefined>, string, any, any>} ) {
     //return (
@@ -24,45 +25,31 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
       // type AppState = ReturnType<typeof appReducer>;
 
       // @ts-ignore
-      const {cities} = useSelector((state : AppState) => state.appReducer);
+      const {weathers} = useSelector((state : AppState) => state.appReducer);
 
       const dispatch = useDispatch();
   
       useEffect(() => {
-        const loadCities = async () => {
+        const loadWeathers = async () => {
           // @ts-ignore
-          await dispatch(getCities());
+          await dispatch(getWeathers());
         };
-        loadCities();
+        loadWeathers();
       }, [dispatch]);
 
-      console.log("ZZ")
-        return (
-          <View>
-            <Text style={weatherListStyle.name}>ZZ</Text>
-            <FlatList
-              data={cities}
-              keyExtractor={(item: City) => item.name}
-              renderItem={({ item }) => 
-                  <Text style={weatherListStyle.name}>{item.name}</Text>
-              }
-            />
-          </View>
-        );
-
-      // return (
-      //   <View>
-      //   <FlatList
-      //     data={allWeathers}
-      //     keyExtractor={(item: Weather) => item.city.name}
-      //     renderItem={({ item }) => 
-      //         <TouchableOpacity onPress={() => navigation.navigate("DetailScreen", {"weatherCity": item.city})}>
-      //           <WeatherElement citySelected={item}></WeatherElement>
-      //         </TouchableOpacity>
-      //     }
-      //   />
-      // </View>
-    // );
+      return (
+        <View>
+        <FlatList
+          data={weathers}
+          keyExtractor={(item: Weather) => item.city.name}
+          renderItem={({ item }) => 
+              <TouchableOpacity onPress={() => navigation.navigate("DetailScreen", {"weather": item})}>
+                <WeatherElement citySelected={item}></WeatherElement>
+              </TouchableOpacity>
+          }
+        />
+      </View>
+    );
 }
 
 //     return (

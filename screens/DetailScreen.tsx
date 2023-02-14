@@ -13,7 +13,7 @@ type Props = {
   export function DetailScreen({route}: Props){ 
     //  const routeParams:City = route.params?.weatherCity as City;
   return (
-    <CityDisplay city={route.params?.weatherCity}></CityDisplay>
+    <CityDisplay weatherSelected={route.params?.weather}></CityDisplay>
   );
 }
 
