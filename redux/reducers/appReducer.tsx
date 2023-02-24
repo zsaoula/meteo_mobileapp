@@ -1,4 +1,4 @@
-import { CITY_DATA, WEATHER_DATA,WEATHERS_DATA, FAVORITE_CITY } from "../constants";
+import { CITY_DATA, WEATHER_DATA,WEATHERS_DATA, FAVORITE_CITY, RESET_FAVORITE_CITY, Weather } from "../constants";
 
 
 const initialState = {
@@ -18,6 +18,8 @@ const initialState = {
       case FAVORITE_CITY:
         // @ts-ignore
         return {...state, favoriteCity: action.payload};
+      case RESET_FAVORITE_CITY:
+        return {...state, favoriteCity: []}
       case CITY_DATA:
         return { ...state, cities: action.payload};
       default:

@@ -153,3 +153,5 @@ export const WEATHERS_DATA = 'WEATHERS_DATA';
 export const CITY_DATA = 'CITY_DATA';
 
 export const FAVORITE_CITY = 'FAVORITE_CITY';
+
+export const RESET_FAVORITE_CITY = 'RESET_FAVORITE_CITY';

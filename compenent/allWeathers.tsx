@@ -37,6 +37,13 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
         loadWeathers();
       }, [dispatch]);
 
+      if(!weathers){
+        return (
+          <View>
+            <Text>Loading...</Text>
+          </View>
+        )
+      }
       return (
         <View>
         <FlatList
