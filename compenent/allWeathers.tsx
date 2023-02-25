@@ -1,41 +1,58 @@
 import {City, Weather, WEATHER_DATA} from "../data/stub";
-import { View,Text, StyleSheet, FlatList, TouchableOpacity, AppState } from "react-native";
+import { View,Text, StyleSheet, FlatList, TouchableOpacity, AppState, TextInput } from "react-native";
 import {cityName} from "../styles/style";
 import { WeatherElement } from "./weatherElementList";
 import {useDispatch, useSelector} from 'react-redux';
 
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import { getCities } from "../redux/actions/actionGetCities";
 import { appReducer } from "../redux/reducers/appReducer";
 import { getWeathers } from "../redux/actions/actionGetWeathers";
 
 export function WeatherList({navigation} : {navigation : NavigationProp<Record<string, object | undefined>, string, any, any>} ) {
-    //return (
-      // <View>
-      //   {WEATHER_DATA.map((weather, index) => (
-      //     <View style={weatherListStyle.container} key={index}>
-      //       <Text>{weather.city.name}</Text>
-      //       <Text>{weather.temperature} °C</Text>
-      //     </View>
-      //   ))}
-      // </View>
-      // const allWeathers = WEATHER_DATA
 
-      // type AppState = ReturnType<typeof appReducer>;
 
       // @ts-ignore
       const {weathers} = useSelector((state : AppState) => state.appReducer);
 
       const dispatch = useDispatch();
+
+      const [filterData, setFilterData] = useState([]);
+      const [masterData, setMasterData] = useState([]);
+      const [search, setSearch] = useState('');
   
       useEffect(() => {
         const loadWeathers = async () => {
           // @ts-ignore
           await dispatch(getWeathers());
+          // @ts-ignore
+          await setFilterData(weathers);
+          // @ts-ignore
+          await setMasterData(weathers);
         };
         loadWeathers();
       }, [dispatch]);
+
+      const searchFilter = (text: string) => {
+        if (text){
+          const newData = masterData.filter((item) =>{
+            //@ts-ignore
+            const itemData = item.city.name ?
+            //@ts-ignore
+                          item.city.name.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase()
+          return itemData.indexOf(textData) > -1
+                          
+          });
+          setFilterData(newData)
+          setSearch(text)
+        }
+        else {
+          setFilterData(masterData)
+          setSearch(text)
+        }
+      }
 
       if(!weathers){
         return (
@@ -46,8 +63,14 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
       }
       return (
         <View>
+           <TextInput
+          value={search}
+          placeholder='Ville'
+          onChangeText={(text => searchFilter(text))}>
+
+          </TextInput>
         <FlatList
-          data={weathers}
+          data={filterData}
           keyExtractor={(item: Weather) => item.city.name}
           renderItem={({ item }) => 
               <TouchableOpacity onPress={() => navigation.navigate("DetailScreen", {"weather": item})}>
@@ -58,18 +81,6 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
       </View>
     );
 }
-
-//     return (
-//       <View>
-//       <FlatList
-//         data={allWeathers}
-//         keyExtractor={(item: Weather) => item.city.name}
-//         renderItem={WeatherElement}>
-
-//         </FlatList>
-//     </View>
-//   );
-// };
 
 const weatherListStyle = StyleSheet.create({
     container: {
