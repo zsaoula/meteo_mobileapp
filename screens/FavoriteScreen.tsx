@@ -6,15 +6,23 @@ import {colorBackground} from '../styles/style';
 import {FAVORITE_CITY_DATA} from '../data/stub';
 import { City, Weather } from '../redux/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp } from '@react-navigation/native';
 
-export function FavoriteScreen() {
+export function FavoriteScreen({navigation} : {navigation: NavigationProp<Record<string, object | undefined>, string, any, any>}) {
 
   // @ts-ignore
-  const {favoriteCity, weathers} = useSelector((state : AppState) => state.appReducer);
+  const {weathers} = useSelector((state : AppState) => state.appReducer);
 
-      const dispatch = useDispatch();
-  
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const loadWeathers = async () => {
+      // @ts-ignore
+      await dispatch(getWeathers());
+    };
+    loadWeathers();
+  }, [dispatch, weathers]);
       // useEffect(() => {
       //   const loadWeathers = async () => {
       //     // @ts-ignore
@@ -23,19 +31,61 @@ export function FavoriteScreen() {
       //   loadWeathers();
       // }, [dispatch]);
 
-      var weatherFav
+      const [favCity, setFavCity] = useState<City | null>(null);
+      const [weatherFav, setWeatherFav] = useState(null);
+
+  useEffect(() => {
+    async function getFavCity() {
+      try {
+        const jsonCity = await AsyncStorage.getItem("favorite");
+        if (jsonCity !== null) {
+          let parseJson : City = JSON.parse(jsonCity);
+          // @ts-ignore
+          const newCity : City = new City(parseJson._name, parseJson._latitude, parseJson._longitude)
+          setFavCity(newCity);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    getFavCity();
+  }, [favCity]);
+
+  useEffect(() => {
+    const loadWeatherFav = async () => {
+      console.log(favCity)
+      setWeatherFav(weathers.find((weather: Weather) => weather.city.name === favCity?.name))
+    };
+    loadWeatherFav();
+  }, [favCity, weathers]);
+
+  
 
       // const weatherFav: Weather = weathers.find((weather : Weather)=> weather.city.name == favoriteCity.name)
-      if(favoriteCity.length === 0)
-      {
-        weatherFav = undefined
-      }
-      else{
-        weatherFav = weathers.find((weather: Weather) => weather.city.name === favoriteCity.name)
-      }
+      // if(!favCity)
+      // {
+      //   weatherFav = undefined
+      // }
+      // else{
+      //   weatherFav = weathers.find((weather: Weather) => weather.city.name === favCity.name)
+      // }
+    
+    if(weatherFav === null){
+      return(
+        <View>
+          <Text>NADA</Text>
+      </View>
+      );
+      
+    }
+
       
   return (
-    <CityDisplay weatherSelected={weatherFav}></CityDisplay>
+    // <CityDisplay weatherSelected={weatherFav}></CityDisplay>
+    <View>
+      <Text>{weatherFav?.city.name}</Text>
+    </View>
   );
 }
 

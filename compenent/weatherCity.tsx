@@ -3,46 +3,68 @@ import {cityName} from "../styles/style";
 import {City, Weather} from '../redux/constants';
 import { TabBarIcon } from "./tabIconBar";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { appReducer } from "../redux/reducers/appReducer";
-import { setFavCity } from "../redux/actions/actionSetFavCity";
-import { setResetFavCity } from "../redux/actions/actionSetResetFavCity";
-import { nothing } from "immer";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type weatherProps = {
     weatherSelected: Weather
 }
 
 export function CityDisplay(props: weatherProps) {
-  // @ts-ignore
-  const {favoriteCity} = useSelector((state : AppState) => state.appReducer);
 
-  const dispatch = useDispatch();
-  
-      useEffect(() => {
-        const loadWeathers = async () => {
+  const [favCity, setFavCity] = useState<City | null>(null);
+
+  useEffect(() => {
+    async function getFavCity() {
+      try {
+        const jsonCity = await AsyncStorage.getItem("favorite");
+        if (jsonCity !== null) {
+          let parseJson : City = JSON.parse(jsonCity);
           // @ts-ignore
-          await dispatch(useSelector((state : AppState) => state.appReducer.favoriteCity));
-        };
-        loadWeathers();
-      }, [dispatch]);
+          const newCity : City = new City(parseJson._name, parseJson._latitude, parseJson._longitude)
+          setFavCity(newCity);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    getFavCity();
+  }, []);
 
-  // console.log(props.city)
-  console.log(props.weatherSelected)
+  async function storeFavCity (cityFav : City) {
+    try {
+      const jsonCity = JSON.stringify(cityFav)
+      await AsyncStorage.setItem("favorite", jsonCity)
+      setFavCity(cityFav)
+     
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function resetStoreFavCity () {
+    try {
+      await AsyncStorage.removeItem("favorite")
+      setFavCity(null)
+     
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
       if(props.weatherSelected != undefined ){
         const cityWeather:Weather = props.weatherSelected;
       const dateCity = cityWeather.at.split(" ")[0]
       const timeCity = cityWeather.at.split(" ")[1].slice(0,5)
 
-      if(favoriteCity.name === cityWeather.city.name){
-        console.log("SIUU")
-      }
+
       return (
         <View>
           <View style={weatherCityStyle.containerFav}>
-           <Pressable onPress={() => favoriteCity.name !== cityWeather.city.name ? dispatch(setFavCity(cityWeather.city)) : dispatch(setResetFavCity()) }>
-            <TabBarIcon name={favoriteCity.name === cityWeather.city.name ? "star" :  "star-o"  } color="#A4A4A4" size={35}/>
+           <Pressable onPress={() => favCity?.name !== cityWeather.city.name ? storeFavCity(cityWeather.city) : resetStoreFavCity() }>
+            <TabBarIcon name={ favCity?.name === cityWeather.city.name ? "star" :  "star-o"  } color="#A4A4A4" size={35}/>
             </Pressable> 
           </View>
           <View style={weatherCityStyle.container}>

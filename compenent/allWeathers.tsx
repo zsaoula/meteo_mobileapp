@@ -1,13 +1,11 @@
-import {City, Weather, WEATHER_DATA} from "../data/stub";
-import { View,Text, StyleSheet, FlatList, TouchableOpacity, AppState, TextInput } from "react-native";
+import {Weather} from "../data/stub";
+import { View, StyleSheet, FlatList, TouchableOpacity, AppState, TextInput, ActivityIndicator } from "react-native";
 import {cityName} from "../styles/style";
 import { WeatherElement } from "./weatherElementList";
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useEffect, useState} from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import { getCities } from "../redux/actions/actionGetCities";
-import { appReducer } from "../redux/reducers/appReducer";
 import { getWeathers } from "../redux/actions/actionGetWeathers";
 
 export function WeatherList({navigation} : {navigation : NavigationProp<Record<string, object | undefined>, string, any, any>} ) {
@@ -26,13 +24,14 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
         const loadWeathers = async () => {
           // @ts-ignore
           await dispatch(getWeathers());
-          // @ts-ignore
-          await setFilterData(weathers);
-          // @ts-ignore
-          await setMasterData(weathers);
         };
         loadWeathers();
       }, [dispatch]);
+
+      useEffect(() => {
+        setFilterData(weathers);
+        setMasterData(weathers);
+      }, [weathers]);
 
       const searchFilter = (text: string) => {
         if (text){
@@ -53,14 +52,15 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
           setSearch(text)
         }
       }
-
-      if(!weathers){
-        return (
-          <View>
-            <Text>Loading...</Text>
+      if(!weathers.length){
+        return(
+          <View> 
+      <ActivityIndicator size="large" color="#0000ff" />
+            
           </View>
         )
       }
+
       return (
         <View>
            <TextInput
