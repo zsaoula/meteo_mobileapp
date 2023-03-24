@@ -28,7 +28,3 @@ const store = configureStore({
 });
 
 export default store;
-
-function serializableCheck() {
-  throw new Error('Function not implemented.');
-}

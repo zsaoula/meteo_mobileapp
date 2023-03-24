@@ -3,8 +3,13 @@ import {cityName} from "../styles/style";
 import {City, Weather} from '../redux/constants';
 import { TabBarIcon } from "./tabIconBar";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { Circle } from "react-native-svg";
+import { getFavCity } from "../redux/actions/actionGetFavCity";
+import { setFavCity } from "../redux/actions/actionSetFavCity";
+import { setResetFavCity } from "../redux/actions/actionSetResetFavCity";
+import { MainInfosWeather } from "./mainInfosWeather";
 
 type weatherProps = {
     weatherSelected: Weather
@@ -12,46 +17,18 @@ type weatherProps = {
 
 export function CityDisplay(props: weatherProps) {
 
-  const [favCity, setFavCity] = useState<City | null>(null);
+  // @ts-ignore
+  const {favoriteCity} = useSelector((state : AppState) => state.appReducer);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getFavCity() {
-      try {
-        const jsonCity = await AsyncStorage.getItem("favorite");
-        if (jsonCity !== null) {
-          let parseJson : City = JSON.parse(jsonCity);
-          // @ts-ignore
-          const newCity : City = new City(parseJson._name, parseJson._latitude, parseJson._longitude)
-          setFavCity(newCity);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  
-    getFavCity();
-  }, []);
-
-  async function storeFavCity (cityFav : City) {
-    try {
-      const jsonCity = JSON.stringify(cityFav)
-      await AsyncStorage.setItem("favorite", jsonCity)
-      setFavCity(cityFav)
-     
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  async function resetStoreFavCity () {
-    try {
-      await AsyncStorage.removeItem("favorite")
-      setFavCity(null)
-     
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const loadFavCity = async () => {
+      // @ts-ignore
+      await dispatch(getFavCity());
+    };
+    loadFavCity();
+  }, [dispatch]);
 
 
       if(props.weatherSelected != undefined ){
@@ -60,26 +37,47 @@ export function CityDisplay(props: weatherProps) {
       const timeCity = cityWeather.at.split(" ")[1].slice(0,5)
 
 
+
       return (
         <View>
           <View style={weatherCityStyle.containerFav}>
-           <Pressable onPress={() => favCity?.name !== cityWeather.city.name ? storeFavCity(cityWeather.city) : resetStoreFavCity() }>
-            <TabBarIcon name={ favCity?.name === cityWeather.city.name ? "star" :  "star-o"  } color="#A4A4A4" size={35}/>
+            <Pressable onPress={() => favoriteCity?.name !== cityWeather.city.name ? dispatch(setFavCity(cityWeather.city)) : dispatch(setResetFavCity()) }>
+              <TabBarIcon name={ favoriteCity?.name === cityWeather.city.name ? "star" :  "star-o"  } color="#A4A4A4" size={35}/>
             </Pressable> 
           </View>
-          <View style={weatherCityStyle.container}>
-            <View style={weatherCityStyle.containerPosition}>
-            <Text style={weatherCityStyle.longAndLatt}>{cityWeather.city.latitude}</Text>
-            <Text style={weatherCityStyle.longAndLatt}>{cityWeather.city.longitude}</Text>
+          <View style={weatherCityStyle.containerTop}>
+            <MainInfosWeather latitude={cityWeather.city.latitude} longitude={cityWeather.city.longitude} name={cityWeather.city.name} temperature={Math.floor(cityWeather.temperature)} weatherDescription={cityWeather.weatherDescription} dateCity={dateCity} timeCity={timeCity} >
+              <Image source={require('../assets/image/nuage.png')}></Image>
+            </MainInfosWeather>
+              {/* <View style={weatherCityStyle.containerPosition}>
+                <Text style={weatherCityStyle.longAndLatt}>{cityWeather.city.latitude}</Text>
+                <Text style={weatherCityStyle.longAndLatt}>{cityWeather.city.longitude}</Text>
+              </View>
+              <Text style={weatherCityStyle.name}>{cityWeather.city.name}</Text>
+              <Text>{dateCity}</Text>
+              <Text>{timeCity}</Text>
+              
+              {/* avec weather type -> img */}
+              {/* <Text style={weatherCityStyle.temp}>{Math.floor(cityWeather.temperature)}°C</Text>
+              <Text style={weatherCityStyle.desc}>{cityWeather.weatherDescription}</Text> */}
+          </View>
+          <View>
+            <View>
+              {/* <Text>Humidité</Text> */}
+              {/* <View>
+                <svg>
+                  <Circle>
+
+                  </Circle>
+                </svg>
+              </View> */}    
             </View>
-            <Text style={weatherCityStyle.name}>{cityWeather.city.name}</Text>
-            <Text>{dateCity}</Text>
-            <Text>{timeCity}</Text>
-            <Image source={require('../assets/image/nuage.png')} style={weatherCityStyle.image}></Image>
-            {/* avec weather type -> img */}
-            <Text style={weatherCityStyle.temp}>{Math.floor(cityWeather.temperature)}°C</Text>
-            <Text style={weatherCityStyle.desc}>{cityWeather.weatherDescription}</Text>
-          </View> 
+            <View>
+              {/* <Text>Ressenti</Text> */}
+              <Text>{cityWeather.temperatureFeelsLike}</Text>
+            </View>
+            {/* humidity, pressure, temperatureFeelsLike, visibility, weatherDescription, weatherType, windSpeed */}
+          </View>
       </View>
     );
       }
@@ -98,39 +96,54 @@ export function CityDisplay(props: weatherProps) {
 const weatherCityStyle = StyleSheet.create({
     containerFav: {
       alignItems: "flex-end",
+      paddingTop: "3%",
+      paddingRight: "3%"
+
     },
-    container: {
+    containerTop: {
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
         height: "100%"
     },
-    name: {
-      color: cityName,
-      fontSize: 30,
-      fontWeight: "bold"
-    },
-    temp: {
-      color: cityName,
-      fontSize: 65,
-      fontWeight: "bold"
-    },
-    containerPosition: {
-      flexDirection: "row",
-      justifyContent:"space-around",
-      width: "50%"
-    },
-    longAndLatt: {
-      fontSize: 13,
-      fontWeight: "100"
-    },
-    image: {
-      width: 150,
-      height: 150
-    },
-    desc: {
-      fontSize:20,
-      fontWeight: "300"
-    }
+    containerMid: {
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      height: "100%"
+  },
+  containerBottom: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: "100%"
+  },
+    // name: {
+    //   color: cityName,
+    //   fontSize: 30,
+    //   fontWeight: "bold"
+    // },
+    // temp: {
+    //   color: cityName,
+    //   fontSize: 65,
+    //   fontWeight: "bold"
+    // },
+    // containerPosition: {
+    //   flexDirection: "row",
+    //   justifyContent:"space-around",
+    //   width: "50%"
+    // },
+    // longAndLatt: {
+    //   fontSize: 13,
+    //   fontWeight: "100"
+    // },
+    // image: {
+    //   width: 150,
+    //   height: 150
+    // },
+    // desc: {
+    //   fontSize:20,
+    //   fontWeight: "300"
+    // }
 
 });

@@ -16,10 +16,9 @@ const initialState = {
       case WEATHER_DATA:
         return {...state, weatherCurrent: action.payload};
       case FAVORITE_CITY:
-        // @ts-ignore
         return {...state, favoriteCity: action.payload};
       case RESET_FAVORITE_CITY:
-        return {...state, favoriteCity: []}
+        return {...state, favoriteCity: action.payload}
       case CITY_DATA:
         return { ...state, cities: action.payload};
       default:

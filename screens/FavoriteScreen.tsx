@@ -13,52 +13,62 @@ import { NavigationProp } from '@react-navigation/native';
 export function FavoriteScreen({navigation} : {navigation: NavigationProp<Record<string, object | undefined>, string, any, any>}) {
 
   // @ts-ignore
-  const {weathers} = useSelector((state : AppState) => state.appReducer);
+  const {weathers, favoriteCity} = useSelector((state : AppState) => state.appReducer);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    const loadWeathers = async () => {
-      // @ts-ignore
-      await dispatch(getWeathers());
-    };
-    loadWeathers();
-  }, [dispatch, weathers]);
-      // useEffect(() => {
-      //   const loadWeathers = async () => {
-      //     // @ts-ignore
-      //     await dispatch(getWeathers());
-      //   };
-      //   loadWeathers();
-      // }, [dispatch]);
 
-      const [favCity, setFavCity] = useState<City | null>(null);
+  useEffect(() => {
+    const loadFavCity = async () => {
+      // @ts-ignore
+      await dispatch(getFavCity());
+    };
+    loadFavCity();
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   const loadWeathers = async () => {
+  //     // @ts-ignore
+  //     await dispatch(getWeathers());
+  //   };
+  //   loadWeathers();
+  // }, [dispatch, weathers]);
+  //     // useEffect(() => {
+  //     //   const loadWeathers = async () => {
+  //     //     // @ts-ignore
+  //     //     await dispatch(getWeathers());
+  //     //   };
+  //     //   loadWeathers();
+  //     // }, [dispatch]);
+
+  //     const [favCity, setFavCity] = useState<City | null>(null);
       const [weatherFav, setWeatherFav] = useState(null);
 
-  useEffect(() => {
-    async function getFavCity() {
-      try {
-        const jsonCity = await AsyncStorage.getItem("favorite");
-        if (jsonCity !== null) {
-          let parseJson : City = JSON.parse(jsonCity);
-          // @ts-ignore
-          const newCity : City = new City(parseJson._name, parseJson._latitude, parseJson._longitude)
-          setFavCity(newCity);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+  // useEffect(() => {
+  //   async function getFavCity() {
+  //     try {
+  //       const jsonCity = await AsyncStorage.getItem("favorite");
+  //       if (jsonCity !== null) {
+  //         let parseJson : City = JSON.parse(jsonCity);
+  //         // @ts-ignore
+  //         const newCity : City = new City(parseJson._name, parseJson._latitude, parseJson._longitude)
+  //         setFavCity(newCity);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
   
-    getFavCity();
-  }, [favCity]);
+  //   getFavCity();
+  // }, [favCity]);
 
   useEffect(() => {
     const loadWeatherFav = async () => {
-      console.log(favCity)
-      setWeatherFav(weathers.find((weather: Weather) => weather.city.name === favCity?.name))
+      // console.log("FAV CITY")
+      // console.log(favoriteCity)
+      setWeatherFav(weathers.find((weather: Weather) => weather.city.name === favoriteCity?.name))
     };
     loadWeatherFav();
-  }, [favCity, weathers]);
+  }, [favoriteCity]);
 
   
 
@@ -82,10 +92,7 @@ export function FavoriteScreen({navigation} : {navigation: NavigationProp<Record
 
       
   return (
-    // <CityDisplay weatherSelected={weatherFav}></CityDisplay>
-    <View>
-      <Text>{weatherFav?.city.name}</Text>
-    </View>
+    <CityDisplay weatherSelected={weatherFav}></CityDisplay>
   );
 }
 
