@@ -1,4 +1,4 @@
-import { City } from "../constants";
+import { City } from "../../data/stub";
 import { setCities } from "./actionSetCities";
 
 //Define your action creators that will be responsible for asynchronous operations

@@ -1,4 +1,4 @@
-import { Weather, City } from "../constants";
+import { Weather, City } from "../../data/stub";
 import { setCities } from "./actionSetCities";
 import { setWeatherWithCity } from "./actionSetWeatherWithCity";
 

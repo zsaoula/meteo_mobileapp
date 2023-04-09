@@ -1,8 +1,10 @@
 import {City, Weather, WEATHER_DATA} from "../data/stub";
 import { View,Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import {cityName} from "../styles/style";
+import { ReactNode } from "react";
 
 type propsWeather = {
+    [x: string]: ReactNode;
     latitude: any,
     longitude: any,
     name: string,
@@ -22,7 +24,7 @@ export function MainInfosWeather(props: propsWeather) {
             <Text style={mainInfosWeatherStyle.name}>{props.name}</Text>
             <Text>{props.dateCity}</Text>
             <Text>{props.timeCity}</Text>
-            {/* {props.children} */}
+            {props.children}
             {/* <Image source={require('../assets/image/nuage.png')} style={mainInfosWeatherStyle.image}></Image> */}
             {/* avec weather type -> img */}
             <Text style={mainInfosWeatherStyle.temp}>{Math.floor(props.temperature)}°C</Text>
@@ -56,10 +58,6 @@ const mainInfosWeatherStyle = StyleSheet.create({
       longAndLatt: {
         fontSize: 13,
         fontWeight: "100"
-      },
-      image: {
-        width: 150,
-        height: 150
       },
       desc: {
         fontSize:20,

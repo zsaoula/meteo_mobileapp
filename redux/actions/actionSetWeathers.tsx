@@ -1,4 +1,5 @@
-import {Weather, WEATHERS_DATA} from '../constants';
+import { WEATHERS_DATA} from '../constants';
+import { Weather } from '../../data/stub';
 
 export const setWeathers = (weathersList: Weather[]) => {
   return {

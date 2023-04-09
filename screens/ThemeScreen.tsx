@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AppState, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CityDisplay } from '../compenent/weatherCity';
 import {colorBackground} from '../styles/style';
-import {City, FAVORITE_CITY_DATA, Weather} from '../data/stub';
+import {City, Weather} from '../data/stub';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

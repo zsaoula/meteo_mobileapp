@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AppState } from "react-native";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { City, Weather } from "../constants";
+import { City, Weather } from "../../data/stub";
 import { getCities } from "./actionGetCities";
 import { setWeathers } from "./actionSetWeathers";
 

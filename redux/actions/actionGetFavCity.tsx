@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { City } from "../constants";
+import { City } from "../../data/stub";
 import { setFavCity } from "./actionSetFavCity";
 
 //Define your action creators that will be responsible for asynchronous operations

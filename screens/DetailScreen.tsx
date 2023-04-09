@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { CityDisplay } from '../compenent/weatherCity';
 import {colorBackground} from '../styles/style';
-import {City, FAVORITE_CITY_DATA, Weather} from '../data/stub';
+import {City, FAVORITE_CITY_DATA} from '../data/stub';
+import { Weather } from '../data/stub';
 import { RouteProp } from '@react-navigation/native';
 
 type Props = {

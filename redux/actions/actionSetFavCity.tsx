@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {City, FAVORITE_CITY} from '../constants';
+import {FAVORITE_CITY} from '../constants';
+import { City } from '../../data/stub';
 
 export const setFavCity = (cityFav: City) => {
   try {

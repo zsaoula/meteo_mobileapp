@@ -1,6 +1,6 @@
 import { View,Text, StyleSheet, Image, Pressable, AppState } from "react-native";
 import {cityName} from "../styles/style";
-import {City, Weather} from '../redux/constants';
+import {City, Weather} from '../data/stub';
 import { TabBarIcon } from "./tabIconBar";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ export function CityDisplay(props: weatherProps) {
           </View>
           <View style={weatherCityStyle.containerTop}>
             <MainInfosWeather latitude={cityWeather.city.latitude} longitude={cityWeather.city.longitude} name={cityWeather.city.name} temperature={Math.floor(cityWeather.temperature)} weatherDescription={cityWeather.weatherDescription} dateCity={dateCity} timeCity={timeCity} >
-              <Image source={require('../assets/image/nuage.png')}></Image>
+              <Image style={weatherCityStyle.image} source={require('../assets/image/nuage.png')}></Image>
             </MainInfosWeather>
               {/* <View style={weatherCityStyle.containerPosition}>
                 <Text style={weatherCityStyle.longAndLatt}>{cityWeather.city.latitude}</Text>
@@ -118,6 +118,10 @@ const weatherCityStyle = StyleSheet.create({
     alignItems: "center",
     height: "100%"
   },
+  image: {
+    width: 150,
+    height: 150
+  }
     // name: {
     //   color: cityName,
     //   fontSize: 30,

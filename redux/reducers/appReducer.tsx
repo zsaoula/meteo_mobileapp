@@ -1,4 +1,5 @@
-import { CITY_DATA, WEATHER_DATA,WEATHERS_DATA, FAVORITE_CITY, RESET_FAVORITE_CITY, Weather } from "../constants";
+import { CITY_DATA, WEATHER_DATA,WEATHERS_DATA, FAVORITE_CITY, RESET_FAVORITE_CITY } from "../constants";
+import { Weather } from "../../data/stub";
 
 
 const initialState = {

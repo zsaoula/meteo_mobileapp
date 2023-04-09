@@ -1,4 +1,5 @@
-import {City, CITY_DATA} from '../constants';
+import {City} from '../../data/stub';
+import { CITY_DATA } from '../constants';
 
 export const setCities = (citiesList: City[]) => {
   // console.log("tt");

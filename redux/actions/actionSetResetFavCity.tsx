@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {City, RESET_FAVORITE_CITY} from '../constants';
+import {RESET_FAVORITE_CITY} from '../constants';
+import {City} from "../../data/stub";
 
 export const setResetFavCity = () => {
   try {

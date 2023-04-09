@@ -9,7 +9,7 @@ type weather = {
 export function WeatherElement(props: weather) {
       return (
       <View style={weatherListStyle.container}>
-         <Text style={weatherListStyle.name}>{props.citySelected.city.name}</Text>
+         <Text testID="weathersCity-name" style={weatherListStyle.name}>{props.citySelected.city.name}</Text>
          <Text>{Math.floor(props.citySelected.temperature)}°C</Text>
       </View>
             );

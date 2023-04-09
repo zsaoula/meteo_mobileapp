@@ -3,10 +3,10 @@ import { View, StyleSheet, FlatList, TouchableOpacity, AppState, TextInput, Acti
 import {cityName} from "../styles/style";
 import { WeatherElement } from "./weatherElementList";
 import {useDispatch, useSelector} from 'react-redux';
-
 import {useEffect, useState} from 'react';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import { getWeathers } from "../redux/actions/actionGetWeathers";
+import { TabBarIcon } from "./tabIconBar";
 
 export function WeatherList({navigation} : {navigation : NavigationProp<Record<string, object | undefined>, string, any, any>} ) {
 
@@ -63,12 +63,18 @@ export function WeatherList({navigation} : {navigation : NavigationProp<Record<s
 
       return (
         <View>
-           <TextInput
-          value={search}
-          placeholder='Ville'
-          onChangeText={(text => searchFilter(text))}>
-
-          </TextInput>
+          <View style={weatherListStyle.containerSearch}>
+            <View style={weatherListStyle.containerIconSearch}>
+              <TabBarIcon name="search" color={cityName} size={20}/>
+            </View>
+            <TextInput
+              style={weatherListStyle.inputCitySearch}
+              value={search}
+              placeholder='Ville'
+              onChangeText={(text => searchFilter(text))}>
+            </TextInput>
+          </View>
+           
         <FlatList
           data={filterData}
           keyExtractor={(item: Weather) => item.city.name}
@@ -102,6 +108,22 @@ const weatherListStyle = StyleSheet.create({
     temperature: {
       color: cityName,
       fontSize: 12
-    }
+    },
+    inputCitySearch: {
+      fontSize: 15,
+      marginLeft: "2%",
+      width: "100%",
+      height: "100%",
+    },
+    containerIconSearch: {
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    containerSearch: {
+      flexDirection: "row",
+      padding: 10,
+      margin: 5,
+      borderRadius: 35
+  },
 
 });
