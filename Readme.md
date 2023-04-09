@@ -19,3 +19,7 @@ Application mobile de météo développée avec React Native par Zakariya SAOULA
 
 - Meilleur UI, manque des informations comme par exemple l'humidité où j'ai comme envie de l'affiché sous forme de barre circulaire rempli en fonction du %
 - Mode Black/Light
+
+--Conception
+
+Sketchs : https://www.canva.com/design/DAFfpQXZEiI/kQmfGfBQD_aM9YnHSyk2wQ/edit?utm_content=DAFfpQXZEiI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
